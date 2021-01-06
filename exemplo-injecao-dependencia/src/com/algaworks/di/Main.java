@@ -1,3 +1,5 @@
+package com.algaworks.di;
+
 import com.algaworks.di.modelo.Cliente;
 import com.algaworks.di.notificacao.Notificador;
 import com.algaworks.di.notificacao.NotificadorSMS;
@@ -10,6 +12,8 @@ public class Main {
 		Cliente maria = new Cliente("Maria", "maria@xyz.com", "1177772222");
 		
 		Notificador notificador = new NotificadorSMS();
+		//Notificador cria o objeto e na hora de escolher a classe escolhe a que quer.
+		
 		
 		AtivacaoClienteService ativacaoCliente = new AtivacaoClienteService(notificador);
 		ativacaoCliente.ativar(joao);
