@@ -9,7 +9,8 @@ import com.algaworks.algafood.di.notificacao.Notificador;
 @Component
 public class AtivacaoClienteService {
 
-	@Autowired
+	//@Autowired com (required = false) deixa a independencia não obrigatória
+	@Autowired(required = false)
 	private Notificador notificador;	
 	
 	//Anotação Autowired define qual construtor vai ser instanciado pelo Spring
@@ -27,7 +28,11 @@ public class AtivacaoClienteService {
 	public void ativar(Cliente cliente) {
 		cliente.ativar();
 		
-		notificador.notificar(cliente, "Seu cadastro no sistema está ativo!");
+		if(notificador != null) {
+			notificador.notificar(cliente, "Seu cadastro no sistema está ativo!");
+		}else {
+			System.out.println("Não existe notificador. Mas cliente foi ativado.");
+		}
 	}
 
 //	@Autowired
