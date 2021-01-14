@@ -15,7 +15,7 @@ import com.algaworks.algafood.di.notificacao.TipoDoNotificador;
 public class AtivacaoClienteService {
 
 	
-	@TipoDoNotificador(NivelUrgencia.URGENTE)
+	@TipoDoNotificador(NivelUrgencia.NORMAL)
 	//@Autowired com (required = false) deixa a independencia não obrigatória
 	//@Qualifier("whatsapp")
 	@Autowired(required = false)

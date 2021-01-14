@@ -1,12 +1,13 @@
 package com.algaworks.algafood.di.notificacao;
 
+import org.springframework.context.annotation.Profile;
 //import org.springframework.beans.factory.annotation.Qualifier;
 //import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import com.algaworks.algafood.di.modelo.Cliente;
 
-
+@Profile("prod")
 @TipoDoNotificador(NivelUrgencia.NORMAL)
 //@Primary //Dando prioridade a um Bean
 //@Qualifier("email")
@@ -22,6 +23,11 @@ public class NotificadorEmail implements Notificador {
 //		this.hostServidorSmtp = hostServidorSmtp;
 //		System.out.println("Construtor da classe NotificadorEmail Chamado. O @Component gerencia os Beans.");
 //	}
+	
+	//Construtor da aula 2.20
+	public NotificadorEmail() {
+		System.out.println("Notificador Email Real");
+	}
 
 	@Override
 	public void notificar(Cliente cliente, String mensagem) {
