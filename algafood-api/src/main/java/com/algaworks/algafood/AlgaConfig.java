@@ -18,7 +18,7 @@
 //		return notificador;
 //	}
 //	
-//	@Bean
+//	@Bean(initMethod = "init",destroyMethod = "destroy")
 //	public AtivacaoClienteService ativacaoClienteService() {
 //		
 //		return new AtivacaoClienteService(notificadorEmail());

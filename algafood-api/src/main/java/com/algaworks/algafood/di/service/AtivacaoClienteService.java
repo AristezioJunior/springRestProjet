@@ -1,8 +1,12 @@
 package com.algaworks.algafood.di.service;
 
+//import javax.annotation.PostConstruct;
+//import javax.annotation.PreDestroy;
+
 //import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 //import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
@@ -33,18 +37,35 @@ public class AtivacaoClienteService {
 //		
 //	}
 	
+//	@PostConstruct
+	public void init() {
+		System.out.println("INIT " + notificador);
+	}
 	
+//	@PreDestroy
+	public void destroy() {
+		System.out.println("DESTROY");
+	}
+	
+	//2.22 Publicando e consumindo eventos customizados
+			//dizer para container que o cliente esta ativo neste momento.
+			@Autowired
+			private ApplicationEventPublisher eventPublisher;
 	
 	public void ativar(Cliente cliente) {
 		cliente.ativar();
 		
+		eventPublisher.publishEvent(new ClienteAtivadoEvent(cliente));
+		
+		
 		//Utikizando List pois tem mais de um bean para Notificador
 //		for (Notificador notificador : notificadores ) {
-			if(notificador != null) {
+			/*if(notificador != null) {
 				notificador.notificar(cliente, "Seu cadastro no sistema está ativo!");
 			}else {
 				System.out.println("Não existe notificador. Mas cliente foi ativado.");
-//			}
+//			}*/
+				
 			
 		}
 		
@@ -59,4 +80,5 @@ public class AtivacaoClienteService {
 	
 	
 	
-}
+
+
