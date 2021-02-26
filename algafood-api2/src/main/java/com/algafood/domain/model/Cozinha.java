@@ -1,5 +1,6 @@
 package com.algafood.domain.model;
 
+import javax.persistence.Column;
 //import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,7 +24,7 @@ public class Cozinha {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	//@Column(name = "nome_cozinha")  //O sistema entende que o atributo vai ser uma coluna
+	@Column(nullable= false)  //O sistema entende que o atributo vai ser uma coluna
 	private String nome;
 
 	
