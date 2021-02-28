@@ -7,12 +7,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+//import com.fasterxml.jackson.annotation.JsonProperty;
+//import com.fasterxml.jackson.annotation.JsonRootName;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 //@Getter
 //@Setter
 //@EqualsAndHashCode
+
+//@JsonRootName("Gastronomia")// Muda o nome do objeto quando requisitado no xml
 @Data // All together now: A shortcut for @ToString, @EqualsAndHashCode, @Getter on all fields, and @Setter on all non-final fields, and @RequiredArgsConstructor!
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity //Representa uma entidade do modela da tabela 
@@ -24,6 +29,8 @@ public class Cozinha {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	//@JsonIgnore
+	//@JsonProperty("titulo")
 	@Column(nullable= false)  //O sistema entende que o atributo vai ser uma coluna
 	private String nome;
 
