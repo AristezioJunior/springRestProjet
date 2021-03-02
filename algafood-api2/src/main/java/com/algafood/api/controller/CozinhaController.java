@@ -49,8 +49,26 @@ public class CozinhaController {
 		return cozinhaRepository.todas();
 	} */
 	
-	//@ResponseStatus(HttpStatus.CREATED) essa anotação muda o nome da resposta da aquisição, no caso deu 200 Ok, passa a ser 200 created.
+	//Aula4.21
 	@GetMapping("/{cozinhaId}")
+	public ResponseEntity<Cozinha> buscar(@PathVariable Long cozinhaId) {
+		
+		Cozinha cozinha = cozinhaRepository.porId(cozinhaId);
+		
+		if(cozinha != null) {
+			return ResponseEntity.ok(cozinha);
+		}
+		
+		//return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); ou
+		return ResponseEntity.notFound().build();
+	}
+	
+	
+	
+	
+	//Aula4.20
+	//@ResponseStatus(HttpStatus.CREATED) essa anotação muda o nome da resposta da aquisição, no caso deu 200 Ok, passa a ser 200 created.
+	/*@GetMapping("/{cozinhaId}")
 	public ResponseEntity<Cozinha> buscar(@PathVariable Long cozinhaId) {
 		Cozinha cozinha = cozinhaRepository.porId(cozinhaId);
 		
@@ -64,10 +82,9 @@ public class CozinhaController {
 		return ResponseEntity
 				.status(HttpStatus.FOUND)
 				.headers(headers)
-				.build();
+				.build();	
 		
-		
-	}
+	}*/
 	
 	
 	
