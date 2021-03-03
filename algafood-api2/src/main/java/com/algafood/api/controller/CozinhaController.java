@@ -2,6 +2,7 @@ package com.algafood.api.controller;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -10,7 +11,11 @@ import org.springframework.http.ResponseEntity;
 //import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 //import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -62,10 +67,7 @@ public class CozinhaController {
 		//return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); ou
 		return ResponseEntity.notFound().build();
 	}
-	
-	
-	
-	
+		
 	//Aula4.20
 	//@ResponseStatus(HttpStatus.CREATED) essa anotação muda o nome da resposta da aquisição, no caso deu 200 Ok, passa a ser 200 created.
 	/*@GetMapping("/{cozinhaId}")
@@ -86,6 +88,28 @@ public class CozinhaController {
 		
 	}*/
 	
+	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
+	public Cozinha adicionar(@RequestBody Cozinha cozinha) {
+		return cozinhaRepository.adicionar(cozinha);
+	}
+	
+	@PutMapping("/{cozinhaId}")
+	public ResponseEntity<Cozinha> atualizar(@PathVariable Long cozinhaId, @RequestBody Cozinha cozinha){
+		Cozinha cozinhaAtual = cozinhaRepository.porId(cozinhaId);
+		
+		if(cozinhaAtual != null) {
+		/*cozinhaAtul.setNome(cozinha.getNome()); Como essa classe só tem a variavel nome podemos fazer assim
+		Mas imagina uma classe com varias variaveis, pensando nisso podemos utilizar a classe BeanUtils*/
+		BeanUtils.copyProperties(cozinha, cozinhaAtual,"id"); // Pegue o que tem em cozinha e jogue para cozinhaAtual
+		
+		cozinhaRepository.adicionar(cozinhaAtual);
+		return ResponseEntity.ok(cozinhaAtual);
+		}
+		
+		return ResponseEntity.notFound().build();
+		
+	}
 	
 	
 	
