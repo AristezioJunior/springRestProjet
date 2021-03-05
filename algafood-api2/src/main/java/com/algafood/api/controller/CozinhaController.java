@@ -4,10 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
+//import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 //import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,8 +21,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.algafood.api.model.CozinhasXmlWrapper;
+import com.algafood.domain.exception.EntidadeEmUsoException;
+import com.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algafood.domain.model.Cozinha;
 import com.algafood.domain.repository.CozinhaRepository;
+import com.algafood.domain.service.CadastroCozinhaService;
 
 /*@Controller //Componente Controlador
 @ResponseBody //Vai ser uma resposta a requisição*/
@@ -34,6 +38,9 @@ public class CozinhaController {
 	
 	@Autowired //Injetando
 	private CozinhaRepository cozinhaRepository;
+	
+	@Autowired
+	private CadastroCozinhaService cadastroCozinha;
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE) //Requisição HTTP e produces informando que o metodo só produs um formato especifico
 	public List<Cozinha> listar(){
@@ -91,7 +98,7 @@ public class CozinhaController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Cozinha adicionar(@RequestBody Cozinha cozinha) {
-		return cozinhaRepository.adicionar(cozinha);
+		return cadastroCozinha.salvar(cozinha);
 	}
 	
 	@PutMapping("/{cozinhaId}")
@@ -108,6 +115,24 @@ public class CozinhaController {
 		}
 		
 		return ResponseEntity.notFound().build();
+		
+	}
+	
+	@DeleteMapping("/{cozinhaId}")
+	public ResponseEntity<Cozinha> remover(@PathVariable Long cozinhaId){
+		try {
+			cadastroCozinha.excluir(cozinhaId);
+			
+			return ResponseEntity.noContent().build();
+			
+			//return ResponseEntity.notFound().build();
+	
+		}catch(EntidadeNaoEncontradaException e) {
+			return ResponseEntity.notFound().build();
+		
+		}catch(EntidadeEmUsoException e) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		}
 		
 	}
 	
