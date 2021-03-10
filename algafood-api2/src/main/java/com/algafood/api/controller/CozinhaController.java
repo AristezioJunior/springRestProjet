@@ -6,7 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+//import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 //import org.springframework.stereotype.Controller;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 //import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algafood.api.model.CozinhasXmlWrapper;
+
 import com.algafood.domain.exception.EntidadeEmUsoException;
 import com.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algafood.domain.model.Cozinha;
@@ -42,17 +42,17 @@ public class CozinhaController {
 	@Autowired
 	private CadastroCozinhaService cadastroCozinha;
 
-	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE) //Requisição HTTP e produces informando que o metodo só produs um formato especifico
+	@GetMapping /*(produces = MediaType.APPLICATION_JSON_VALUE) //Requisição HTTP e produces informando que o metodo só produs um formato especifico*/
 	public List<Cozinha> listar(){
-		System.out.println("LISTAR COZINHA 1");
+		//System.out.println("LISTAR COZINHA 1");
 		return cozinhaRepository.todas();
 	} 
 	
 	
-	@GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
+	/*@GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
 	public CozinhasXmlWrapper listarXml(){
 		return new CozinhasXmlWrapper(cozinhaRepository.todas());
-	}
+	} */ 
 	
 	
 	/*@GetMapping(produces = MediaType.APPLICATION_XML_VALUE) //Requisição HTTP e produces informando que o metodo só produs um formato especifico
@@ -110,7 +110,7 @@ public class CozinhaController {
 		Mas imagina uma classe com varias variaveis, pensando nisso podemos utilizar a classe BeanUtils*/
 		BeanUtils.copyProperties(cozinha, cozinhaAtual,"id"); // Pegue o que tem em cozinha e jogue para cozinhaAtual
 		
-		cozinhaRepository.adicionar(cozinhaAtual);
+		cozinhaAtual = cadastroCozinha.salvar(cozinhaAtual);
 		return ResponseEntity.ok(cozinhaAtual);
 		}
 		
