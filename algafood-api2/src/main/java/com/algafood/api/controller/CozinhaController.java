@@ -101,6 +101,7 @@ public class CozinhaController {
 		return cadastroCozinha.salvar(cozinha);
 	}
 	
+	
 	@PutMapping("/{cozinhaId}")
 	public ResponseEntity<Cozinha> atualizar(@PathVariable Long cozinhaId, @RequestBody Cozinha cozinha){
 		Cozinha cozinhaAtual = cozinhaRepository.porId(cozinhaId);
