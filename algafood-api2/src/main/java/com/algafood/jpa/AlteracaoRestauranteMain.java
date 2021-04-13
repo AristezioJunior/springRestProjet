@@ -24,7 +24,7 @@ public class AlteracaoRestauranteMain {
 		restaurante.setNome("Cabron");
 		restaurante.setTaxaFrete(new BigDecimal("4.50"));
 		
-		restauranteRepository.salvar(restaurante);
+		restauranteRepository.save(restaurante);
 		
 		
 		

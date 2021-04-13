@@ -29,8 +29,8 @@ public class InclusaoRestauranteMain {
 		restaurante2.setNome("MedievalMenta");
 		restaurante2.setTaxaFrete(new BigDecimal("10.00"));
 		
-		restaurante1 = restauranteReposytory.salvar(restaurante1);
-		restaurante2 = restauranteReposytory.salvar(restaurante2);
+		restaurante1 = restauranteReposytory.save(restaurante1);
+		restaurante2 = restauranteReposytory.save(restaurante2);
 		
 		System.out.printf("Id: %d -- Nome:   %s-- Taxa Entrega: %f\n", restaurante1.getId(), restaurante1.getNome(), restaurante1.getTaxaFrete());
 		System.out.printf("Id: %d -- Nome:   %s-- Taxa Entrega: %f\n", restaurante2.getId(), restaurante2.getNome(), restaurante2.getTaxaFrete());

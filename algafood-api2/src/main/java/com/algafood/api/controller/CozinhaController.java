@@ -1,6 +1,7 @@
 package com.algafood.api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 //import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
 
 import com.algafood.domain.exception.EntidadeEmUsoException;
 import com.algafood.domain.exception.EntidadeNaoEncontradaException;
@@ -45,7 +45,7 @@ public class CozinhaController {
 	@GetMapping /*(produces = MediaType.APPLICATION_JSON_VALUE) //Requisição HTTP e produces informando que o metodo só produs um formato especifico*/
 	public List<Cozinha> listar(){
 		//System.out.println("LISTAR COZINHA 1");
-		return cozinhaRepository.todas();
+		return cozinhaRepository.findAll(); //LISTAR
 	} 
 	
 	
@@ -65,10 +65,10 @@ public class CozinhaController {
 	@GetMapping("/{cozinhaId}")
 	public ResponseEntity<Cozinha> buscar(@PathVariable Long cozinhaId) {
 		
-		Cozinha cozinha = cozinhaRepository.porId(cozinhaId);
-		
-		if(cozinha != null) {
-			return ResponseEntity.ok(cozinha);
+		Optional<Cozinha> cozinha = cozinhaRepository.findById(cozinhaId);
+		//Toda vez que usar o findById usar  a classe Optional, ela não retorna valor nulo e dessa forma perguntar se o objeto esta presente
+		if(cozinha.isPresent()) {
+			return ResponseEntity.ok(cozinha.get());
 		}
 		
 		//return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); ou
@@ -104,15 +104,15 @@ public class CozinhaController {
 	
 	@PutMapping("/{cozinhaId}")
 	public ResponseEntity<Cozinha> atualizar(@PathVariable Long cozinhaId, @RequestBody Cozinha cozinha){
-		Cozinha cozinhaAtual = cozinhaRepository.porId(cozinhaId);
+		Optional<Cozinha> cozinhaAtual = cozinhaRepository.findById(cozinhaId);
 		
-		if(cozinhaAtual != null) {
+		if(cozinhaAtual.isPresent()) {
 		/*cozinhaAtul.setNome(cozinha.getNome()); Como essa classe só tem a variavel nome podemos fazer assim
 		Mas imagina uma classe com varias variaveis, pensando nisso podemos utilizar a classe BeanUtils*/
-		BeanUtils.copyProperties(cozinha, cozinhaAtual,"id"); // Pegue o que tem em cozinha e jogue para cozinhaAtual
+		BeanUtils.copyProperties(cozinha, cozinhaAtual.get(),"id"); // Pegue o que tem em cozinha e jogue para cozinhaAtual
 		
-		cozinhaAtual = cadastroCozinha.salvar(cozinhaAtual);
-		return ResponseEntity.ok(cozinhaAtual);
+		Cozinha cozinhaSalva = cadastroCozinha.salvar(cozinhaAtual.get());
+		return ResponseEntity.ok(cozinhaSalva);
 		}
 		
 		return ResponseEntity.notFound().build();
@@ -120,7 +120,7 @@ public class CozinhaController {
 	}
 	
 	@DeleteMapping("/{cozinhaId}")
-	public ResponseEntity<Cozinha> remover(@PathVariable Long cozinhaId){
+	public ResponseEntity<?> remover(@PathVariable Long cozinhaId){
 		try {
 			cadastroCozinha.excluir(cozinhaId);
 			
@@ -132,7 +132,7 @@ public class CozinhaController {
 			return ResponseEntity.notFound().build();
 		
 		}catch(EntidadeEmUsoException e) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
 		}
 		
 	}
