@@ -1,11 +1,17 @@
 package com.algafood.domain.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 //import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 //import com.fasterxml.jackson.annotation.JsonProperty;
 //import com.fasterxml.jackson.annotation.JsonRootName;
@@ -34,8 +40,9 @@ public class Cozinha {
 	@Column(nullable= false)  //O sistema entende que o atributo vai ser uma coluna
 	private String nome;
 
-	
-	
+	@JsonIgnore //Como nesse caso cozinha iria chamar restaurante e restaurante iria chamar cozinha, virando um loop infinity, usamos essa anotação para ignorar esse atributo
+	@OneToMany(mappedBy= "cozinha") //pega do atributo que esta sendo mapeado
+	private List<Restaurante> restaurantes = new ArrayList<>();
 	
 	
 }
