@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,6 +23,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -47,7 +49,9 @@ public class Restaurante {
 	@Column(name="taxa_frete", nullable= false)
 	private BigDecimal taxaFrete;
 
-	@ManyToOne
+	//@JsonIgnore
+	@JsonIgnoreProperties("hibernateLazyInitializer") //Aula 6.12 Fetching para Lazy
+	@ManyToOne(fetch= FetchType.LAZY)//Só carrega se precisar (como estamos usando o JsonIgnore ele não faz mas o select cozinha)
 	@JoinColumn(name = "cozinha_id", nullable = false) //Esse nome do id tem que ser o mesmo que vai ser utilizado no import.sql
 	private Cozinha cozinha;	
 	
@@ -67,8 +71,8 @@ public class Restaurante {
 	private LocalDateTime dataAtualizacao;
 		
 	
-	@JsonIgnore //faz com que a forma de pagamento não saia na pesquisa do postman
-	@ManyToMany
+	//@JsonIgnore //faz com que a forma de pagamento não saia na pesquisa do postman
+	@ManyToMany						//(fetch = FetchType.EAGER)//Dificilmente usa o eager pois ele carrega toda vida o select
 	//Customizando a tabela auxiliar 
 	@JoinTable(name = "restaurante_forma_pagamento", joinColumns = @JoinColumn (name="restaurante_id"),
 	inverseJoinColumns = @JoinColumn (name = "forma_pagamento_id"))

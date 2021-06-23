@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 //import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -12,6 +13,11 @@ import com.algafood.domain.model.Restaurante;
 
 public interface RestauranteRepository extends/*AULA 5.20=>*/ CustomJpaRepository<Restaurante, Long>  /*JpaRepository<Restaurante, Long>*/, RestauranteRepositoryQueries, JpaSpecificationExecutor<Restaurante> {
 
+	
+	@Query("from Restaurante r join r.cozinha left join fetch r.formasPagamento")
+	List<Restaurante> findAll();
+	
+	
 	//Acrescentando mais métodos para o repositório
 	
 	//Spring assinaturas de métodos

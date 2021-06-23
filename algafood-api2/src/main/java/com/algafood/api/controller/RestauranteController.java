@@ -42,6 +42,15 @@ public class RestauranteController {
 	@GetMapping /*(produces = MediaType.APPLICATION_JSON_VALUE) //Requisição HTTP e produces informando que o metodo só produs um formato especifico*/
 	public List<Restaurante> listar(){
 		return restauranteRepository.findAll();
+		
+		//AULA 6.11
+		/*System.out.println(restaurantes.get(0).getNome());
+		restaurantes.get(0).getFormasPagamento().forEach(System.out::println);
+		
+		System.out.println(restaurantes.get(1).getNome());
+		restaurantes.get(1).getFormasPagamento().forEach(System.out::println);
+		
+		return restaurantes;*/
 	} 
 	
 	
